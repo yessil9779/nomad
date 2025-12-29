@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - Netflix Catalog</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>">
+</head>
+<body>
+    <nav class="navbar" style="background: transparent;">
+        <a href="/" class="logo">NETFLIXDB</a>
+    </nav>
+    
+    <main class="auth-container">
+        <div class="auth-box">
+            <h1>Sign In</h1>
+            
+            <div id="error-message" class="error-message"></div>
+            
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter your username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Sign In</button>
+            </form>
+            
+            <p class="auth-switch">
+                New here? <a href="/register">Create an account</a>
+            </p>
+            
+            <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border-color); text-align: center; color: var(--text-muted); font-size: 0.85rem;">
+                <p>Demo credentials:</p>
+                <p><strong>Username:</strong> demo &nbsp; <strong>Password:</strong> demo123</p>
+            </div>
+        </div>
+    </main>
+    
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
+

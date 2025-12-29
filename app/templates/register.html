@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Netflix Catalog</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>">
+</head>
+<body>
+    <nav class="navbar" style="background: transparent;">
+        <a href="/" class="logo">NETFLIXDB</a>
+    </nav>
+    
+    <main class="auth-container">
+        <div class="auth-box">
+            <h1>Sign Up</h1>
+            
+            <div id="error-message" class="error-message"></div>
+            
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Choose a username" required minlength="3">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Create a password" required minlength="6">
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password</label>
+                    <input type="password" id="confirm-password" placeholder="Confirm your password" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Create Account</button>
+            </form>
+            
+            <p class="auth-switch">
+                Already have an account? <a href="/login">Sign in</a>
+            </p>
+        </div>
+    </main>
+    
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
+

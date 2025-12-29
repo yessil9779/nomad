@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalog - Netflix Catalog</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>">
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div id="catalog-page">
+        <nav class="navbar">
+            <a href="/" class="logo">NETFLIXDB</a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/catalog" class="active">Catalog</a></li>
+            </ul>
+            <div class="user-menu">
+                <span class="user-name" id="user-name">User</span>
+                <button id="logout-btn" class="btn btn-outline">Sign Out</button>
+            </div>
+        </nav>
+        
+        <main class="catalog-container">
+            <div class="catalog-header">
+                <h1>🎬 Netflix Catalog</h1>
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="Search movies and TV shows...">
+                    <button onclick="applyFilters()">🔍</button>
+                </div>
+            </div>
+            
+            <div class="filters-section">
+                <div class="filter-group">
+                    <label>Type</label>
+                    <select id="filter-type">
+                        <option value="">All Types</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Category</label>
+                    <select id="filter-category">
+                        <option value="">All Categories</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Rating</label>
+                    <select id="filter-rating">
+                        <option value="">All Ratings</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Year From</label>
+                    <select id="filter-year-from">
+                        <option value="">Any</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Year To</label>
+                    <select id="filter-year-to">
+                        <option value="">Any</option>
+                    </select>
+                </div>
+                
+                <div class="filter-actions">
+                    <button class="btn btn-primary" onclick="applyFilters()">Apply Filters</button>
+                    <button class="btn btn-secondary" onclick="resetFilters()">Reset</button>
+                </div>
+            </div>
+            
+            <section class="shows-section">
+                <p class="shows-stats" id="shows-stats">Loading...</p>
+                
+                <div id="loading" class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>Loading shows...</p>
+                </div>
+                
+                <div class="shows-grid" id="shows-grid"></div>
+                
+                <div class="pagination" id="pagination"></div>
+            </section>
+        </main>
+        
+        <!-- Show Modal -->
+        <div id="show-modal">
+            <div class="modal-overlay">
+                <div class="modal">
+                    <div class="modal-header">
+                        <h2 class="modal-title">Show Title</h2>
+                        <button class="modal-close" onclick="closeShowModal()">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Content will be dynamically inserted -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
+
