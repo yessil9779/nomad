@@ -6,7 +6,6 @@ import sys
 import os
 import time
 
-# Add parent directory to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from sqlalchemy.orm import Session
@@ -17,51 +16,42 @@ from app.services.auth import get_password_hash
 
 
 def wait_for_db(max_retries=30, delay=2):
-    """Wait for database to be ready"""
     from sqlalchemy import text
     for i in range(max_retries):
         try:
             with engine.connect() as conn:
-                conn.execute(text("SELECT 1"))
-            print("Database is ready!")
+                conn.execute(text('SELECT 1'))
+            print('Database is ready!')
             return True
         except Exception as e:
-            print(f"Waiting for database... ({i+1}/{max_retries})")
+            print(f'Waiting for database... ({i+1}/{max_retries})')
             time.sleep(delay)
-    raise Exception("Database not available after maximum retries")
+    raise Exception('Database not available after maximum retries')
 
 
 def load_data(csv_path: str):
-    """Load data from CSV file into database"""
-    
-    # Wait for database
     wait_for_db()
     
-    # Create tables
     Base.metadata.create_all(bind=engine)
-    print("Tables created successfully!")
+    print('Tables created successfully!')
     
-    # Read CSV
-    print(f"Reading CSV file: {csv_path}")
+    print(f'Reading CSV file: {csv_path}')
     df = pd.read_csv(csv_path)
     
-    # Clean data - replace NaN with None
     df = df.where(pd.notnull(df), None)
     
-    print(f"Found {len(df)} records in CSV")
+    print(f'Found {len(df)} records in CSV')
     
     db = SessionLocal()
     
     try:
-        # Check if data already exists
         existing_count = db.query(Show).count()
         if existing_count > 0:
-            print(f"Database already contains {existing_count} shows. Skipping data load.")
+            print(f'Database already contains {existing_count} shows. Skipping data load.')
             create_default_user(db)
             return
         
-        # Create ratings
-        print("Creating ratings...")
+        print('Creating ratings...')
         ratings_set = set()
         for rating in df['rating'].dropna().unique():
             if rating and str(rating).strip():
@@ -74,8 +64,7 @@ def load_data(csv_path: str):
             db.flush()
             ratings_map[rating_name] = rating_obj
         
-        # Create categories
-        print("Creating categories...")
+        print('Creating categories...')
         categories_set = set()
         for listed_in in df['listed_in'].dropna():
             if listed_in:
@@ -91,19 +80,15 @@ def load_data(csv_path: str):
             db.flush()
             categories_map[category_name] = category_obj
         
-        # Create shows
-        print("Creating shows...")
+        print('Creating shows...')
         for idx, row in df.iterrows():
-            # Skip empty rows
             if pd.isna(row.get('show_id')) or pd.isna(row.get('title')):
                 continue
             
-            # Get rating
             rating_obj = None
             if row.get('rating') and str(row['rating']).strip():
                 rating_obj = ratings_map.get(str(row['rating']).strip())
             
-            # Get release year
             release_year = None
             if row.get('release_year'):
                 try:
@@ -111,7 +96,6 @@ def load_data(csv_path: str):
                 except (ValueError, TypeError):
                     pass
             
-            # Create show
             show = Show(
                 show_id=str(row['show_id']),
                 type=str(row['type']) if row.get('type') else 'Unknown',
@@ -127,7 +111,6 @@ def load_data(csv_path: str):
                 description=str(row['description']) if row.get('description') else None
             )
             
-            # Add categories
             if row.get('listed_in'):
                 for category_name in str(row['listed_in']).split(','):
                     cat_name = category_name.strip()
@@ -137,44 +120,40 @@ def load_data(csv_path: str):
             db.add(show)
             
             if (idx + 1) % 100 == 0:
-                print(f"Processed {idx + 1} records...")
+                print(f'Processed {idx + 1} records...')
         
         db.commit()
-        print(f"Successfully loaded {db.query(Show).count()} shows!")
-        print(f"Created {db.query(Category).count()} categories")
-        print(f"Created {db.query(Rating).count()} ratings")
+        print(f'Successfully loaded {db.query(Show).count()} shows!')
+        print(f'Created {db.query(Category).count()} categories')
+        print(f'Created {db.query(Rating).count()} ratings')
         
-        # Create default user
         create_default_user(db)
         
     except Exception as e:
         db.rollback()
-        print(f"Error loading data: {e}")
+        print(f'Error loading data: {e}')
         raise
     finally:
         db.close()
 
 
 def create_default_user(db: Session):
-    """Create a default demo user"""
-    # Check if user exists
-    existing_user = db.query(User).filter(User.username == "demo").first()
+    existing_user = db.query(User).filter(User.username == 'demo').first()
     if existing_user:
-        print("Demo user already exists")
+        print('Demo user already exists')
         return
     
-    # Create demo user
     demo_user = User(
-        username="demo",
-        email="demo@example.com",
-        hashed_password=get_password_hash("demo123")
+        username='demo',
+        email='demo@example.com',
+        hashed_password=get_password_hash('demo123')
     )
     db.add(demo_user)
     db.commit()
     print("Created demo user: username='demo', password='demo123'")
 
 
-if __name__ == "__main__":
-    csv_path = os.environ.get("CSV_PATH", "/app/data/netflix.csv")
+if __name__ == '__main__':
+    csv_path = os.environ.get('CSV_PATH', '/app/data/netflix.csv')
     load_data(csv_path)
 
